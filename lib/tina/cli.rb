@@ -8,21 +8,13 @@ module Tina
       duration_in_seconds = parse_duration(duration)
 
       s3 = Aws::S3::Client.new(region: 'eu-west-1')
+      s3_client = S3Client.new(s3)
       prefixes = File.readlines(prefix_file).map(&:chomp)
-      objects = prefixes.flat_map do |bucket_prefix|
-        bucket, prefix = bucket_prefix.split('/', 2)
-        puts "Listing prefix #{bucket_prefix}..."
-        s3.list_objects(bucket: bucket, prefix: prefix).contents.map do |object|
-          { key: object.key, size: object.size }
-        end
-      end
-
-      total_size = objects.reduce(0) { |memo, obj| memo + obj[:size] }
-
-      restore_plan = RestorePlan.new(monthly_storage.to_i, total_size)
+      objects = s3_client.list_bucket_prefixes(prefixes)
+      restore_plan = RestorePlan.new(monthly_storage.to_i, objects)
       price = restore_plan.price(duration_in_seconds)
       puts "Number of objects to restore: #{objects.size}"
-      puts "Total restore size: #{total_size} B (or #{total_size / 1024 ** 2} MB, or #{total_size / 1024 ** 3} GB, or #{total_size / 1024 ** 4} TB)"
+      puts "Total restore size: #{restore_plan.total_restore_size} B (or #{restore_plan.total_restore_size / 1024 ** 2} MB, or #{restore_plan.total_restore_size / 1024 ** 3} GB, or #{restore_plan.total_restore_size / 1024 ** 4} TB)"
       puts "Restore duration: #{duration}"
       puts "Cost: $#{price}"
       return unless yes?("Are you this rich? [y/n]")

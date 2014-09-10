@@ -3,21 +3,34 @@ require 'spec_helper'
 module Tina
   describe RestorePlan do
     subject do
-      described_class.new(monthly_storage_size, restore_size, options)
+      described_class.new(monthly_storage_size, objects_to_restore, options)
     end
 
     let :monthly_storage_size do
       75 * (1024 ** 4)
     end
 
-    let :restore_size do
+    let :total_restore_size do
       140 * (1024 ** 3)
+    end
+
+    let :objects_to_restore do
+      object_size = total_restore_size / 10
+      (1..10).to_a.map do |i|
+        double("object #{i}", key: 'foo/bar#{i}', size: object_size)
+      end
     end
 
     let :options do
       {
         price_per_gb_per_hour: 0.01
       }
+    end
+
+    describe '#total_restore_size' do
+      it 'corresponds to the sum of all object sizes' do
+        expect(subject.total_restore_size).to eq(total_restore_size)
+      end
     end
 
     describe '#price' do
@@ -44,8 +57,12 @@ module Tina
           }
         end
 
-        subject do
-          described_class.new(227 * 1024 ** 4, 12_000 * 1024 ** 3, options)
+        let :monthly_storage_size do
+          227 * 1024 ** 4
+        end
+
+        let :total_restore_size do
+          12_000 * 1024 ** 3
         end
 
         it 'matches the price for a restore over a month' do
@@ -66,8 +83,12 @@ module Tina
       end
 
       context 'with the examples Amazon supplied in an e-mail' do
-        subject do
-          described_class.new(227 * 1024 ** 4, 12_000 * 1024 ** 3, options)
+        let :monthly_storage_size do
+          227 * 1024 ** 4
+        end
+
+        let :total_restore_size do
+          12_000 * 1024 ** 3
         end
 
         it 'matches the price for a restore over 4 days' do
