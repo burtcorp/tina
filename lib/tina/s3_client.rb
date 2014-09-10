@@ -21,5 +21,9 @@ module Tina
         objects
       end
     end
+
+    def restore_object(object, keep_days)
+      @s3.restore_object(bucket: object.bucket, key: object.key, restore_request: { days: keep_days })
+    end
   end
 end
