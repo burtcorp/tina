@@ -5,12 +5,12 @@ module Tina
     DAYS_PER_MONTH = 30
     PRICE_PER_GB_PER_HOUR = 0.011
 
-    def initialize(monthly_storage_size, objects, options = {})
-      @monthly_storage_size = monthly_storage_size
+    def initialize(total_storage_size, objects, options = {})
+      @total_storage_size = total_storage_size
       @objects = objects
       @price_per_gb_per_hour = options[:price_per_gb_per_hour] || PRICE_PER_GB_PER_HOUR
 
-      @daily_allowance = @monthly_storage_size * DAILY_FREE_TIER_ALLOWANCE_FACTOR / DAYS_PER_MONTH
+      @daily_allowance = @total_storage_size * DAILY_FREE_TIER_ALLOWANCE_FACTOR / DAYS_PER_MONTH
     end
 
     def price(total_time)

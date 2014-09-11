@@ -3,10 +3,10 @@ require 'spec_helper'
 module Tina
   describe RestorePlan do
     subject do
-      described_class.new(monthly_storage_size, object_collection, options)
+      described_class.new(total_storage_size, object_collection, options)
     end
 
-    let :monthly_storage_size do
+    let :total_storage_size do
       75 * (1024 ** 4)
     end
 
@@ -49,7 +49,7 @@ module Tina
             }
           end
 
-          let :monthly_storage_size do
+          let :total_storage_size do
             227 * 1024 ** 4
           end
 
@@ -75,7 +75,7 @@ module Tina
         end
 
         context 'with the examples Amazon supplied in an e-mail' do
-          let :monthly_storage_size do
+          let :total_storage_size do
             227 * 1024 ** 4
           end
 

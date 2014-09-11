@@ -3,14 +3,14 @@ require 'aws-sdk-core'
 
 module Tina
   class CLI < Thor
-    desc "restore MONTHLY_STORAGE DURATION PREFIX_FILE KEEP_DAYS", "Restore files from Glacier into S3"
-    def restore(monthly_storage, duration, prefix_file, keep_days)
+    desc "restore TOTAL_STORAGE DURATION PREFIX_FILE KEEP_DAYS", "Restore files from Glacier into S3"
+    def restore(total_storage, duration, prefix_file, keep_days)
       duration_in_seconds = parse_duration(duration)
       keep_days = keep_days.to_i
 
       prefixes = File.readlines(prefix_file).map(&:chomp)
       objects = RestorePlan::ObjectCollection.new(s3_client.list_bucket_prefixes(prefixes))
-      restore_plan = RestorePlan.new(monthly_storage.to_i, objects)
+      restore_plan = RestorePlan.new(total_storage.to_i, objects)
       price = restore_plan.price(duration_in_seconds)
       chunks = objects.chunk(duration_in_seconds)
       puts

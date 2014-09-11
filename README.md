@@ -6,7 +6,7 @@ A tool to restore from Glacier into S3 over time, to reduce costs.
 
 What you need:
 
-* The `MONTHLY_STORAGE` number, which is the amount of data stored in
+* The `TOTAL_STORAGE` number, which is the amount of data stored in
   Glacier, in bytes. You can find a good enough estimate for this
   number by looking at the "Amazon Simple Storage Service
   EU-TimedStorage-GlacierByteHrs" line item on your bill for last
