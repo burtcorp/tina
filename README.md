@@ -7,7 +7,11 @@ A tool to restore from Glacier into S3 over time, to reduce costs.
 What you need:
 
 * The `MONTHLY_STORAGE` number, which is the amount of data stored in
-  Glacier, in bytes
+  Glacier, in bytes. You can find a good enough estimate for this
+  number by looking at the "Amazon Simple Storage Service
+  EU-TimedStorage-GlacierByteHrs" line item on your bill for last
+  month ("Amazon Simple Storage Service TimedStorage-GlacierByteHrs"
+  for US regions).
 * A `PREFIX_FILE` with lines on the format `<BUCKET>/<PREFIX>` with
   all the prefixes you want to restore
 
