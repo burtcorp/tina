@@ -55,9 +55,9 @@ module Tina
           begin
             s3_client.restore_object(object, keep_days)
           rescue Aws::S3::Errors::RestoreAlreadyInProgress, Aws::S3::Errors::InvalidObjectState => e
-            say "Error restoring #{object.bucket} / #{object.key} was ignored: #{e}"
+            say "Error restoring #{object.bucket} / #{object.key} was ignored: #{e}", :yellow
           else
-            say "Restore issued for #{object.bucket} / #{object.key}"
+            say "Restore issued for #{object.bucket} / #{object.key}", :green
           end
         end
 
@@ -67,9 +67,9 @@ module Tina
           next_start = start + CHUNK_INTERVAL
           sleep_time = (next_start - Time.now)
           if sleep_time < 0
-            say "Warning! Issuing restores took more than 4 hours, so the end time will be delayed. Proceeding immediately with next chunk."
+            say "Warning! Issuing restores took more than 4 hours, so the end time will be delayed. Proceeding immediately with next chunk.", :yellow
           else
-            say "Sleeping for %.1f seconds, until #{next_start}" % sleep_time
+            say "Sleeping for %.1f seconds, until #{next_start}" % sleep_time, :green
             sleep sleep_time
           end
         end
