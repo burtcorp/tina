@@ -79,7 +79,7 @@ module Tina
     def s3_client
       @s3_client ||= begin
         s3 = Aws::S3::Client.new(region: 'eu-west-1')
-        s3_client = S3Client.new(s3)
+        s3_client = S3Client.new(s3, shell)
       end
     end
   end

@@ -4,12 +4,16 @@ module Tina
       double('s3', list_objects: object_list)
     end
 
+    let :shell do
+      double('shell', say: nil)
+    end
+
     let :object_list do
       double('object list', contents: [double('object', key: 'first', size: 123)], is_truncated: false)
     end
 
     subject do
-      described_class.new(s3)
+      described_class.new(s3, shell)
     end
 
     describe '#list_bucket_prefixes' do

@@ -4,8 +4,9 @@ module Tina
   class S3Client
     ClientError = Class.new(StandardError)
 
-    def initialize(s3)
+    def initialize(s3, shell)
       @s3 = s3
+      @shell = shell
     end
 
     def list_bucket_prefixes(prefix_uris)
@@ -15,7 +16,7 @@ module Tina
         [uri.host, uri.path.sub(%r[^/], '')]
       end
       bucket_prefixes.flat_map do |(bucket,prefix)|
-        puts "Listing prefix #{bucket}/#{prefix}..."
+        @shell.say "Listing prefix #{bucket}/#{prefix}..."
         objects = []
         marker = nil
         loop do
