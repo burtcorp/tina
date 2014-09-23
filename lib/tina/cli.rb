@@ -13,25 +13,25 @@ module Tina
       restore_plan = RestorePlan.new(total_storage.to_i, objects)
       price = restore_plan.price(duration_in_seconds)
       chunks = objects.chunk(duration_in_seconds)
-      puts
-      puts "Restores will be performed in the following chunks:"
-      puts "-" * 60
+      say
+      say "Restores will be performed in the following chunks:"
+      say "-" * 60
       chunks.each_with_index do |chunk, index|
         chunk_size = chunk.map(&:size).reduce(&:+)
-        puts "#{index+1}) #{chunk.size} objects of total size %.2f GB / %.2f TB" % [chunk_size / 1024 ** 3, chunk_size.to_f / 1024 ** 4]
+        say "#{index+1}) #{chunk.size} objects of total size %.2f GB / %.2f TB" % [chunk_size / 1024 ** 3, chunk_size.to_f / 1024 ** 4]
       end
-      puts "-" * 60
-      puts "Actual restore time: %i days, %i hours" % [(4 * chunks.size) / 24, (4 * chunks.size) % 24]
-      puts "Number of objects to restore: #{objects.size}"
-      puts "Total restore size: %.2f MB / %.2f GB / %.2f TB" % [objects.total_size.to_f / 1024 ** 2, objects.total_size.to_f / 1024 ** 3, objects.total_size.to_f / 1024 ** 4]
-      puts "Estimated cost: $#{price}"
-      puts "Days to keep objects on S3: #{keep_days} days"
-      puts "-" * 60
-      puts "* Please beware that these costs are not included in estimated cost:"
-      puts "*   - Cost for %i restore requests" % [objects.size]
-      puts "*   - Storage on S3 of %.2f GB during %i days" % [objects.total_size.to_f / 1024 ** 3, keep_days]
-      puts "-" * 60
-      return unless yes?("Do you feel rich? [y/n]")
+      say "-" * 60
+      say "Actual restore time: %i days, %i hours" % [(4 * chunks.size) / 24, (4 * chunks.size) % 24]
+      say "Number of objects to restore: #{objects.size}"
+      say "Total restore size: %.2f MB / %.2f GB / %.2f TB" % [objects.total_size.to_f / 1024 ** 2, objects.total_size.to_f / 1024 ** 3, objects.total_size.to_f / 1024 ** 4]
+      say "Estimated cost: $#{price}"
+      say "Days to keep objects on S3: #{keep_days} days"
+      say "-" * 60
+      say "* Please beware that these costs are not included in estimated cost:"
+      say "*   - Cost for %i restore requests" % [objects.size]
+      say "*   - Storage on S3 of %.2f GB during %i days" % [objects.total_size.to_f / 1024 ** 3, keep_days]
+      say "-" * 60
+      return unless yes?("Do you feel rich? [y/n]", :yellow)
       restore_chunks(chunks, keep_days)
     end
 
@@ -49,27 +49,27 @@ module Tina
     def restore_chunks(chunks, keep_days)
       chunks.each_with_index do |chunk, index|
         start = Time.now
-        puts "Restoring #{chunk.size} objects, chunk #{index+1} of #{chunks.size}"
+        say "Restoring #{chunk.size} objects, chunk #{index+1} of #{chunks.size}"
 
         chunk.each do |object|
           begin
             s3_client.restore_object(object, keep_days)
           rescue Aws::S3::Errors::RestoreAlreadyInProgress, Aws::S3::Errors::InvalidObjectState => e
-            puts "Error restoring #{object.bucket} / #{object.key} was ignored: #{e}"
+            say "Error restoring #{object.bucket} / #{object.key} was ignored: #{e}"
           else
-            puts "Restore issued for #{object.bucket} / #{object.key}"
+            say "Restore issued for #{object.bucket} / #{object.key}"
           end
         end
 
-        puts "Restore for all objects in chunk %i requested. Took %.1f seconds." % [index+1, Time.now - start]
+        say "Restore for all objects in chunk %i requested. Took %.1f seconds." % [index+1, Time.now - start]
 
         if index + 1 < chunks.size
           next_start = start + CHUNK_INTERVAL
           sleep_time = (next_start - Time.now)
           if sleep_time < 0
-            puts "Warning! Issuing restores took more than 4 hours, so the end time will be delayed. Proceeding immediately with next chunk."
+            say "Warning! Issuing restores took more than 4 hours, so the end time will be delayed. Proceeding immediately with next chunk."
           else
-            puts "Sleeping for %.1f seconds, until #{next_start}" % sleep_time
+            say "Sleeping for %.1f seconds, until #{next_start}" % sleep_time
             sleep sleep_time
           end
         end
