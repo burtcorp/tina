@@ -7,7 +7,7 @@ to keep control of costs.
 
 What you need:
 
-* The `TOTAL_STORAGE` number, which is the amount of data stored in
+* The `total-storage` number, which is the amount of data stored in
   Glacier, in bytes. You can find a good enough estimate for this
   number by looking at the "Amazon Simple Storage Service
   EU-TimedStorage-GlacierByteHrs" line item on your bill for last
@@ -30,7 +30,7 @@ following contents:
 
 She can now run tina like this;
 
-    $ tina 249589139505152 20h my-restore.txt 14
+    $ tina --total-storage=249589139505152 --duration=20h --keep-days=14 my-restore.txt
 
 This will instruct tina to prepare a restore over __20 hours__ for all
 objects matching the prefixes in `my-restore.txt` and keep the objects
