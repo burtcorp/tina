@@ -18,18 +18,18 @@ module Tina
       say "-" * 60
       chunks.each_with_index do |chunk, index|
         chunk_size = chunk.map(&:size).reduce(&:+)
-        say "#{index+1}) #{chunk.size} objects of total size %.2f GB / %.2f TB" % [chunk_size / 1024 ** 3, chunk_size.to_f / 1024 ** 4]
+        say "#{index+1}) #{chunk.size} objects of total size %.2f GiB / %.2f TiB" % [chunk_size / 1024 ** 3, chunk_size.to_f / 1024 ** 4]
       end
       say "-" * 60
       say "Actual restore time: %i days, %i hours" % [(4 * chunks.size) / 24, (4 * chunks.size) % 24]
       say "Number of objects to restore: #{objects.size}"
-      say "Total restore size: %.2f MB / %.2f GB / %.2f TB" % [objects.total_size.to_f / 1024 ** 2, objects.total_size.to_f / 1024 ** 3, objects.total_size.to_f / 1024 ** 4]
+      say "Total restore size: %.2f MiB / %.2f GiB / %.2f TiB" % [objects.total_size.to_f / 1024 ** 2, objects.total_size.to_f / 1024 ** 3, objects.total_size.to_f / 1024 ** 4]
       say "Estimated cost: $#{price}"
       say "Days to keep objects on S3: #{keep_days} days"
       say "-" * 60
       say "* Please beware that these costs are not included in estimated cost:"
       say "*   - Cost for %i restore requests" % [objects.size]
-      say "*   - Storage on S3 of %.2f GB during %i days" % [objects.total_size.to_f / 1024 ** 3, keep_days]
+      say "*   - Storage on S3 of %.2f GiB during %i days" % [objects.total_size.to_f / 1024 ** 3, keep_days]
       say "-" * 60
       return unless yes?("Do you feel rich? [y/n]", :yellow)
       restore_chunks(chunks, keep_days)
