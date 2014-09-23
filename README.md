@@ -12,7 +12,7 @@ What you need:
   EU-TimedStorage-GlacierByteHrs" line item on your bill for last
   month ("Amazon Simple Storage Service TimedStorage-GlacierByteHrs"
   for US regions).
-* A `PREFIX_FILE` with lines on the format `<BUCKET>/<PREFIX>` with
+* A `PREFIX_FILE` with lines on the format `s3://<BUCKET>/<PREFIX>` with
   all the prefixes you want to restore
 
 An example of how this tool can be used follows.
@@ -23,9 +23,9 @@ bytes. She wants to restore all photos from June 2014 from the bucket
 from `my-movies`. She prepares a file called `my-restore.txt` with the
 following contents:
 
-    my-photos/2014/06/
-    my-movies/horror/A
-    my-movies/horror/B
+    s3://my-photos/2014/06/
+    s3://my-movies/horror/A
+    s3://my-movies/horror/B
 
 She can now run tina like this;
 

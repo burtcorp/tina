@@ -1,13 +1,21 @@
+require 'uri'
+
 module Tina
   class S3Client
+    ClientError = Class.new(StandardError)
+
     def initialize(s3)
       @s3 = s3
     end
 
-    def list_bucket_prefixes(prefixes)
-      prefixes.flat_map do |bucket_prefix|
-        bucket, prefix = bucket_prefix.split('/', 2)
-        puts "Listing prefix #{bucket_prefix}..."
+    def list_bucket_prefixes(prefix_uris)
+      bucket_prefixes = prefix_uris.map do |prefix_uri|
+        uri = URI.parse(prefix_uri)
+        raise ClientError, "Invalid S3 URI: #{uri}" unless uri.scheme == 's3'
+        [uri.host, uri.path.sub(%r[^/], '')]
+      end
+      bucket_prefixes.flat_map do |(bucket,prefix)|
+        puts "Listing prefix #{bucket}/#{prefix}..."
         objects = []
         marker = nil
         loop do
