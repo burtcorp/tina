@@ -18,10 +18,10 @@ module Tina
       chunk_size = quadhourly_restore_rate(total_time)
       chunks = @objects.chunk(chunk_size)
       largest_chunk_object_size = chunks.map { |chunk| chunk.map(&:size).reduce(&:+) }.max
-      quadhours = chunks.size # ([total_time, 1].max.to_f / (4 * 3600)).ceil
+      quadhours = chunks.size
       quadhourly_allowance = @daily_allowance / ( [(24 / 4), quadhours].min * 4)
 
-      peak_retrieval_rate = largest_chunk_object_size / 4 # @total_restore_size / quadhours / 4
+      peak_retrieval_rate = largest_chunk_object_size / 4
       peak_billable_retrieval_rate = [0, peak_retrieval_rate - quadhourly_allowance].max
 
       peak_billable_retrieval_rate * (@price_per_gb_per_hour / 1024 ** 3) * 720
