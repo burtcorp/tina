@@ -7,6 +7,7 @@ module Tina
     option :total_storage, type: :numeric, required: true, desc: 'the total amount stored in Glacier, in bytes'
     option :duration, type: :string, required: true, desc: 'duration of the restore, in the format <N>h or <N>d'
     option :keep_days, type: :numeric, required: true, desc: 'The number of days to keep objects on S3'
+    option :aws_region, type: :string, required: true, default: 'eu-west-1', desc: 'The Amazon region to operate against'
     def restore(prefix_file)
       total_storage = options[:total_storage]
       duration = options[:duration]
@@ -83,7 +84,7 @@ module Tina
 
     def s3_client
       @s3_client ||= begin
-        s3 = Aws::S3::Client.new(region: 'eu-west-1')
+        s3 = Aws::S3::Client.new(region: options[:aws_region])
         s3_client = S3Client.new(s3, shell)
       end
     end
