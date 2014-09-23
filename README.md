@@ -1,6 +1,7 @@
 # Tina
 
-A tool to restore from Glacier into S3 over time, to reduce costs.
+A tool to restore from Glacier into S3 over time in chunks, in order
+to keep control of costs.
 
 ## Usage
 
@@ -17,7 +18,7 @@ What you need:
 
 An example of how this tool can be used follows.
 
-Caroline stores 227 TB of data in Glacier, which is 249589139505152
+Caroline stores 227 TiB of data in Glacier, which is 249589139505152
 bytes. She wants to restore all photos from June 2014 from the bucket
 `my-photos` and all her horror movies starting with the letter A and B
 from `my-movies`. She prepares a file called `my-restore.txt` with the
@@ -43,6 +44,18 @@ Please note that tina is a long running process, which means it is a
 good idea to run it under `screen` or `tmux`, and on a machine that is
 constantly connected, e.g. an EC2 instance.
 
+## Notes
+
+* The estimated cost does not include the cost for the restore
+  requests or the temporary storage on S3.
+* The estimated cost is based on the assumption that no other restores
+  are running in parallel, since that would incur a higher peak
+  restore rate and consequently a higher cost.
+* The parameter for specifying the number of days to keep objects on
+  S3 is passed directly to the restore request. This means that
+  objects restored in one of the first chunks may expire sooner from
+  S3 than objects restored in one of the last chunks.
+
 ## Future improvements
 
 * Speed up initial object listing by parallelizing requests
@@ -51,4 +64,5 @@ constantly connected, e.g. an EC2 instance.
 * Implement resume and failure handling. Currently, if tina fails (for
   example due to a restore request failing) the prefix file would have
   to be updated manually in order to resume at the same place later.
-
+* Use a first-fit algorithm to spread objects into chunks, instead of
+  the current naïve ordered chunking
