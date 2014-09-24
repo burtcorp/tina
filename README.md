@@ -77,3 +77,7 @@ constantly connected, e.g. an EC2 instance.
   to be updated manually in order to resume at the same place later.
 * Use a first-fit algorithm to spread objects into chunks, instead of
   the current naïve ordered chunking
+
+## Copyright
+
+© 2014 Burt AB, see LICENSE.txt (BSD 3-Clause).

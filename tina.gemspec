@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage      = 'http://github.com/burtcorp/tina'
   s.summary       = %q{CLI tool for restoring objects from Amazon Glacier}
   s.description   = %q{CLI tool for restoring objects from Amazon Glacier over time in order to control costs}
-  s.license       = 'Apache License 2.0'
+  s.license       = 'BSD-3-Clause'
 
   s.files         = Dir['bin/tina', 'lib/**/*.rb', 'README.md']
   s.test_files    = Dir['spec/**/*.rb']
