@@ -78,6 +78,14 @@ constantly connected, e.g. an EC2 instance.
 * Use a first-fit algorithm to spread objects into chunks, instead of
   the current naïve ordered chunking
 
+## Disclaimer
+
+The authors make no guarantees that the costs calculated using this
+script are correct and will not take any responsibility for any costs
+caused by running this script. Please beware that restoring objects is
+a potentially costly operation, that Amazon's pricing model may change
+at any time and that this script may contain nasty bugs.
+
 ## Copyright
 
 © 2014 Burt AB, see LICENSE.txt (BSD 3-Clause).
