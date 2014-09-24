@@ -1,7 +1,18 @@
 # Tina
 
-A tool to restore from Glacier into S3 over time in chunks, in order
-to keep control of costs.
+Tina is a tool for restoring objects from Amazon Glacier into Amazon
+S3, while maintaining control over costs.
+
+Amazon Glacier allows for a certain amount of the total storage to be
+restored for free. The pricing model is however very complicated when
+this threshold is exceeded, and it is not trivial to calculate when it
+will be. Tina was written in order to solve this by estimating a price
+for a restore given the total storage, the duration of the restore,
+and what objects to restore.
+
+## Install
+
+    $ gem install tina
 
 ## Usage
 
