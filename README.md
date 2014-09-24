@@ -45,7 +45,7 @@ She can now run tina like this;
 
 This will instruct tina to prepare a restore over __20 hours__ for all
 objects matching the prefixes in `my-restore.txt` and keep the objects
-on S3 for __14 days__. Using the monthly storage amount, tina can
+on S3 for __14 days__. Using the total storage amount, tina can
 estimate a price for the restore.
 
 After printing information about the restore and an estimated price,
