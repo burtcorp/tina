@@ -1,7 +1,7 @@
 module Tina
   class RestorePlan
 
-    DAILY_FREE_TIER_ALLOWANCE_FACTOR = 0.05
+    MONTHLY_FREE_TIER_ALLOWANCE_FACTOR = 0.05
     DAYS_PER_MONTH = 30
     PRICE_PER_GB_PER_HOUR = 0.011
 
@@ -10,7 +10,7 @@ module Tina
       @objects = objects
       @price_per_gb_per_hour = options[:price_per_gb_per_hour] || PRICE_PER_GB_PER_HOUR
 
-      @daily_allowance = @total_storage_size * DAILY_FREE_TIER_ALLOWANCE_FACTOR / DAYS_PER_MONTH
+      @daily_allowance = @total_storage_size * MONTHLY_FREE_TIER_ALLOWANCE_FACTOR / DAYS_PER_MONTH
     end
 
     def price(total_time)
