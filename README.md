@@ -41,7 +41,7 @@ following contents:
 
 She can now run tina like this;
 
-    $ tina --total-storage=249589139505152 --duration=20h --keep-days=14 my-restore.txt
+    $ tina restore --total-storage=249589139505152 --duration=20h --keep-days=14 my-restore.txt
 
 This will instruct tina to prepare a restore over __20 hours__ for all
 objects matching the prefixes in `my-restore.txt` and keep the objects
