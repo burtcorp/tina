@@ -46,13 +46,15 @@ module Tina
 
       def chunk(max_chunk_size)
         @chunks ||= begin
-          chunks = @objects.chunk(sum: 0, index: 0) do |object, state|
-            state[:sum] += object.size
-            if state[:sum] > max_chunk_size
-              state[:sum] = object.size
-              state[:index] += 1
+          sum = 0
+          index = 0
+          chunks = @objects.chunk do |object|
+            sum += object.size
+            if sum > max_chunk_size
+              sum = object.size
+              index += 1
             end
-            state[:index]
+            index
           end
           chunks.map(&:last)
         end

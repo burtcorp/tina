@@ -90,6 +90,31 @@ module Tina
       end
     end
   end
+
+  describe RestorePlan::ObjectCollection do
+    describe '#chunk' do
+      let :object_collection do
+        described_class.new(objects)
+      end
+
+      let :objects do
+        [
+          double(:fake_object1, size: 3),
+          double(:fake_object2, size: 3),
+          double(:fake_object3, size: 3),
+        ]
+      end
+
+      it 'chunks objects into chunks of the maximum size given' do
+        expect(object_collection.chunk(6)).to eq([objects[0..1], objects[2..2]])
+      end
+
+      it 'places objects larger than the given maximum size into their own chunks' do
+        objects[1] = double(:large_object, size: 42)
+        expect(object_collection.chunk(6)).to eq([objects[0..0], objects[1..1], objects[2..2]])
+      end
+    end
+  end
 end
 
 module SpecHelpers
