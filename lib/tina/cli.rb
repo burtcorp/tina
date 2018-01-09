@@ -16,9 +16,9 @@ module Tina
 
       prefixes = File.readlines(prefix_file).map(&:chomp)
       objects = RestorePlan::ObjectCollection.new(s3_client.list_bucket_prefixes(prefixes))
-      restore_plan = RestorePlan.new(total_storage.to_i, objects)
-      price = restore_plan.price(duration_in_seconds)
-      chunks = objects.chunk(duration_in_seconds)
+      restore_plan = RestorePlan.new(total_storage.to_i, objects, duration_in_seconds)
+      price = restore_plan.price
+      chunks = restore_plan.object_chunks
       say
       say "Restores will be performed in the following chunks:"
       say "-" * 60
