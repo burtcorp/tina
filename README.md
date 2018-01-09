@@ -1,5 +1,7 @@
 # Tina
 
+_**READ THIS: AWS has changed the pricing model for AWS Glacier since the conception of this tool. Tina can still be used to restore objects, but its price estimates will be incorrect and we recommend using other tools like the AWS CLI. You have been warned. This project will remain for historical reasons.**_
+
 Tina is a tool for restoring objects from Amazon Glacier into Amazon
 S3, while maintaining control over costs.
 
